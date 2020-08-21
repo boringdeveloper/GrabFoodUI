@@ -420,20 +420,23 @@ class _RestaurantViewPageState extends State<RestaurantViewPage> {
                                         ),
                                         SizedBox(width: 15.0),
                                         (product.imageUrl != '')
-                                            ? Container(
-                                                height: 100.0,
-                                                width: 100.0,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.green[300],
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(8.0),
-                                                  ),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      product.imageUrl,
+                                            ? Hero(
+                                                tag: product.id,
+                                                child: Container(
+                                                  height: 100.0,
+                                                  width: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.green[300],
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(8.0),
                                                     ),
-                                                    fit: BoxFit.cover,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        product.imageUrl,
+                                                      ),
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               )

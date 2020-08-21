@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:grabFood/data/Restaurants.dart';
 import 'package:grabFood/data/RecommendedCategs.dart';
+import 'package:grabFood/screens/FoodRewards/FoodRewardsPage.dart';
 import 'package:grabFood/screens/RestaurantViewPage.dart';
 import 'package:grabFood/widgets/RestaurantListItem.dart';
 
@@ -182,15 +184,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     color: Color.fromRGBO(253, 231, 210, 1),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
-                          child: Text(
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.55,
+                            minWidth: MediaQuery.of(context).size.width * 0.50,
+                          ),
+                          child: AutoSizeText(
                             'There are 3 food rewards waiting.',
                             style: TextStyle(
                               color: Color.fromRGBO(155, 91, 74, 1),
-                              fontSize: 12.0,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
+                            minFontSize: 12.0,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         FlatButton(
@@ -204,7 +214,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Colors.white,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FoodRewardsPage(),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -538,8 +555,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: restaurants.length,
                       itemBuilder: (BuildContext ctxt, int index) {
-                        return RestaunrantListItem(
-                          restaurant: restaurants[index],
+                        return GestureDetector(
+                          onTap: () {
+                            showBranchSelectionActionBar(restaurants[index]);
+                          },
+                          child: RestaunrantListItem(
+                            restaurant: restaurants[index],
+                          ),
                         );
                       },
                     ),
@@ -550,6 +572,224 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  showBranchSelectionActionBar(Restaurant restaurant) {
+    String promo;
+    int deliveryTime;
+    var outlets = [
+      'Uptown Mall',
+      'Market! Market!',
+      'Venice Grand Canal',
+      'Merkato, BGC',
+      'SM Aura'
+    ];
+
+    if (restaurant.discType == 'AMOUNT') {
+      promo = "P${restaurant.discVal.toString()} OFF: ${restaurant.discDesc}";
+    } else if (restaurant.discType == 'PERCENTAGE') {
+      promo = "${restaurant.discVal.toString()}% OFF: ${restaurant.discDesc}";
+    } else if (restaurant.discType == 'FREEDELIVERY') {
+      promo = "FREE DELIVERY: ${restaurant.discDesc}";
+    } else {
+      promo = '';
+    }
+
+    deliveryTime = (restaurant.distance * 20).round();
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.6,
+          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(6.0),
+              topRight: Radius.circular(6.0),
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black26,
+                      width: 0.25,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    (restaurant.imageUrl != '')
+                        ? Container(
+                            height: 100.0,
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              color: Colors.green[300],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
+                              ),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  restaurant.imageUrl,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : SizedBox(width: 100.0),
+                    SizedBox(width: 15.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            restaurant.name.replaceAll("", "\u{200B}"),
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 2.5),
+                          Text(
+                            restaurant.tags.replaceAll("", "\u{200B}"),
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black54,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 12.0),
+                          // outlets
+                          Text(
+                            "${restaurant.outletCount} outlets near you",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              decorationColor: Colors.black38,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: 10.0),
+                  itemCount: outlets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RestaurantViewPage(
+                              restaurant: restaurant,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 12.0,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.black26,
+                              width: 0.25,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              outlets[index].replaceAll("", "\u{200B}"),
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 10.0),
+                            // Ratings, delivery time and distance
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.star,
+                                  size: 14.0,
+                                  color: Colors.yellow,
+                                ),
+                                SizedBox(width: 2.0),
+                                Text(
+                                  restaurant.rating.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    decorationColor: Colors.black45,
+                                  ),
+                                ),
+                                SizedBox(width: 10.0),
+                                Icon(
+                                  Icons.timer,
+                                  size: 14.0,
+                                ),
+                                SizedBox(width: 2.0),
+                                Text(
+                                  "$deliveryTime mins • ${restaurant.distance} km",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    decorationColor: Colors.black45,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5.0),
+                            // Promo
+                            (promo != "")
+                                ? Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.local_offer,
+                                        size: 14.0,
+                                        color: Color.fromRGBO(199, 169, 130, 1),
+                                      ),
+                                      SizedBox(width: 2.0),
+                                      Expanded(
+                                        child: Text(
+                                          promo.replaceAll("", "\u{200B}"),
+                                          style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Colors.black87,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox.shrink(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

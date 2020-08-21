@@ -30,13 +30,17 @@ class _ProductViewPageState extends State<ProductViewPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       (widget.product.imageUrl != "")
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .30,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    widget.product.imageUrl,
+                          ? Hero(
+                              tag: widget.product.id,
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * .30,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      widget.product.imageUrl,
+                                    ),
                                   ),
                                 ),
                               ),

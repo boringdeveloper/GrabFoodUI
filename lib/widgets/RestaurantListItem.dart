@@ -24,18 +24,7 @@ class RestaunrantListItem extends StatelessWidget {
 
     deliveryTime = (restaurant.distance * 20).round();
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RestaurantViewPage(
-              restaurant: restaurant,
-            ),
-          ),
-        );
-      },
-      child: Container(
+    return Container(
         padding: EdgeInsets.symmetric(vertical: 12.0),
         decoration: BoxDecoration(
           border: Border(
@@ -160,7 +149,6 @@ class RestaunrantListItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
