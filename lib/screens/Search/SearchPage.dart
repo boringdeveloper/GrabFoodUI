@@ -23,7 +23,14 @@ class _SearchPageState extends State<SearchPage> {
     'Cafe'
   ];
   FocusNode searchFocusNode;
+  TextEditingController searchTextCtrl = TextEditingController();
   String search = '';
+
+  @override
+  void dispose() {
+    searchTextCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +66,7 @@ class _SearchPageState extends State<SearchPage> {
               Expanded(
                 child: Container(
                   child: TextField(
+                    controller: searchTextCtrl,
                     onChanged: (value) {
                       setState(() {
                         search = value;
@@ -141,7 +149,17 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          search = cuisine;
+                          searchTextCtrl.value = TextEditingValue(
+                            text: cuisine,
+                            selection: TextSelection.fromPosition(
+                              TextPosition(offset: cuisine.length),
+                            ),
+                          );
+                        });
+                      },
                     ),
                   )
                   .toList(),
@@ -163,7 +181,17 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: popularCuisines.length,
               itemBuilder: (BuildContext ctxt, int index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      search = popularCuisines[index];
+                      searchTextCtrl.value = TextEditingValue(
+                        text: popularCuisines[index],
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: popularCuisines[index].length),
+                        ),
+                      );
+                    });
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       vertical: 16.0,
