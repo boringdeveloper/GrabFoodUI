@@ -6,6 +6,7 @@ import 'package:grabFood/data/Restaurants.dart';
 import 'package:grabFood/data/RecommendedCategs.dart';
 import 'package:grabFood/screens/FoodRewards/FoodRewardsPage.dart';
 import 'package:grabFood/screens/RestaurantViewPage.dart';
+import 'package:grabFood/screens/Search/SearchPage.dart';
 import 'package:grabFood/widgets/RestaurantListItem.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -114,28 +115,38 @@ class _MyHomePageState extends State<MyHomePage> {
               vertical: 14.0,
               horizontal: 12,
             ),
-            child: Container(
-              padding: EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(247, 247, 247, 1),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    color: Colors.black45,
-                    size: 18.0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(),
                   ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    'What are you craving?',
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14.0,
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(12.0),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(247, 247, 247, 1),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.search,
+                      color: Colors.black45,
+                      size: 18.0,
                     ),
-                  )
-                ],
+                    SizedBox(width: 8.0),
+                    Text(
+                      'What are you craving?',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14.0,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

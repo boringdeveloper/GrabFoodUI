@@ -116,14 +116,14 @@ class _FoodRewardsPageState extends State<FoodRewardsPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 12.0),
+                              SizedBox(height: 8.0),
                               Text(
                                 foodRewards[index]
                                     .description
                                     .replaceAll("", "\u{200B}"),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
+                                  fontSize: 14.0,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -143,7 +143,7 @@ class _FoodRewardsPageState extends State<FoodRewardsPage> {
                                         style: TextStyle(
                                           color:
                                               Color.fromRGBO(210, 123, 116, 1),
-                                          fontSize: 14.0,
+                                          fontSize: 12.0,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -155,7 +155,7 @@ class _FoodRewardsPageState extends State<FoodRewardsPage> {
                                       'Use Now',
                                       style: TextStyle(
                                         color: Color.fromRGBO(91, 166, 180, 1),
-                                        fontSize: 16.0,
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -190,7 +190,7 @@ class _FoodRewardsPageState extends State<FoodRewardsPage> {
                   'Get More Rewards',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                   ),
                 ),
                 Expanded(
@@ -206,7 +206,7 @@ class _FoodRewardsPageState extends State<FoodRewardsPage> {
                   '1,234 Points',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w300,
                   ),
                 )
